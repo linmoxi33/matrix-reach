@@ -34,6 +34,9 @@ Reported rules:
 | MR010 | `include`/`exclude` is not a list of mappings | error |
 | MR011 | `exclude` value is not in the axis (can never match) | error |
 
+规则编号**没有 MR009**：`grep -rn MR009 matrix_reach/ tests/` 为 0 命中（本次这行说明是仓库里唯一一次提到它），
+它是一个未使用的编号。对外规则就是上表这 10 条（MR001–MR008、MR010、MR011）；`--self-test` 也正好覆盖这 10 条。
+
 **Severity matters.** MR003/MR004 are how maintainers intentionally add one-off jobs
 (pandas' `environment: downstream`, CPython's `sanitizer: ASan`). Calling those errors
 would be noise. They are notes; only provable contradictions are errors.
@@ -49,6 +52,14 @@ produces no verdict.
 ## Measured corpus result
 
 Two corpora, scanned on 2026-11-02:
+
+> **这两个语料不在本仓库里。** 仓库只随附 `examples/` 的 4 个上游 workflow，实测
+> `python3 -m matrix_reach.cli examples/` 输出是
+> `files=4 matrices=13 skipped=1 combinations=68 errors=0 notes=39`。
+> 下表的 188/43 来自**外部语料**：`actions/starter-workflows` 的全部 `.yml`，加上
+> pandas / django / CPython 三个仓库的 `.github/workflows/*.yml`；本仓库目前**没有随附
+> 取语料的脚本**，所以这两个数字不能在本仓库内一条命令复现，只能当作"外部非随附测量"。
+> 要抬回可复现，下一步应提交抓取脚本 + 语料清单哈希。
 
 | corpus | files | matrices | skipped (expressions) | combinations | errors | notes |
 |---|---|---|---|---|---|---|
